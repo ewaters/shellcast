@@ -1,9 +1,9 @@
 .shellcast {
-	border: 1px solid grey;
 	display: inline-block;
 }
 
 .terminal-wrapper {
+	position: relative;
 	display: inline-block;
 	background: black;
 	padding: 4px;
@@ -19,4 +19,37 @@
 .terminal .reverse-video {
 	background: white;
 	color: black;
+}
+
+.shellcast .action-cover {
+	position: absolute;
+	left: 0px;
+	background: white;
+	color: red;
+	opacity: 0.5;
+	width: 100%;
+	height: 80px;
+	text-align: center;
+	font-size: 4em;
+	font-family: Arial;
+	font-weight: bold;
+}
+
+.shellcast .capture-mouse-events {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
+.shellcast .input-display {
+	height: 24px;
+	overflow: hidden;
+}
+
+.shellcast .input-display kbd {
+	float: right;
+	margin: 2px;
 }

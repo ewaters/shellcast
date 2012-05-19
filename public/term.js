@@ -255,7 +255,7 @@ Terminal.prototype.open = function() {
 
   this.refresh(0, this.rows - 1);
 
-  this.startBlink();
+  //this.startBlink();
   this.focus();
 
 /*
@@ -799,6 +799,9 @@ Terminal.prototype.startBlink = function() {
   this._blinker = function() {
     self.cursorBlink();
   };
+  // Set the blink state to on at first
+  self.cursorState = 0;
+  self.cursorBlink();
   this._blink = setInterval(this._blinker, 500);
 };
 
@@ -807,6 +810,13 @@ Terminal.prototype.refreshBlink = function() {
   clearInterval(this._blink);
   this._blink = setInterval(this._blinker, 500);
 };
+
+Terminal.prototype.stopBlink = function () {
+  if (!Terminal.cursorBlink) return;
+  clearInterval(this._blink);
+  this.cursorState = 0;
+  this.refresh(this.y, this.y);
+}
 
 Terminal.prototype.scroll = function() {
   var row;

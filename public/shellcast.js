@@ -30,8 +30,6 @@ Shellcast.prototype.loadData = function (data) {
 	var self = this;
 	self.data = data;
 
-	console.info("Got data", data);
-
 	self.element.toggleClass('shellcast', true);
 
 	// Create the terminal
@@ -41,30 +39,89 @@ Shellcast.prototype.loadData = function (data) {
 	);
 
 	// Create Terminal DOM, attach it to the element and set its width
-	var terminal = term.open();
-	self.element.append(
-		$('<div class="terminal-wrapper"></div>').append(terminal)
+	var terminal = $( term.open() );
+	self.terminalWrapper = $('<div class="terminal-wrapper"></div>').append(terminal);
+	self.element.append(self.terminalWrapper);
+	terminal.width( self.params.terminal_character_width * data.term_cols );
+
+	var captureMouseEvents = $('<div class="capture-mouse-events"></div>');
+	self.terminalWrapper.append(captureMouseEvents);
+	captureMouseEvents.hover(
+		$.proxy( self.hoverIn, self ),
+		$.proxy( self.hoverOut, self )
 	);
-	$(terminal).width( self.params.terminal_character_width * data.term_cols );
+	captureMouseEvents.click( $.proxy( self.click, self ) );
 
 	// Create a place to display input
 	var inputDisplay = $('<div class="input-display"></div>');
 	self.element.append(inputDisplay);
+	inputDisplay.width( self.params.terminal_character_width * data.term_cols );
 
 	// Create a new player, give it the term and hit play
 	self.player = new Shellcast.Player(term, inputDisplay);
 	self.player.load(data);
 
+	self.player.onStateChange = $.proxy( self.updateHover, self );
+
 	if (self.params.autoplay)
 		self.player.play();
+}
+
+Shellcast.prototype.hoverIn = function () {
+	var self = this;
+	if (self.hoverDiv !== undefined)
+		return;
+
+	self.hoverDiv = $('<div class="action-cover"></div>');
+	self.updateHover( self.player.state );
+	self.terminalWrapper.prepend( self.hoverDiv );
+
+	self.hoverDiv.css('top',
+		(
+		 	self.terminalWrapper.height() / 2 -
+			self.hoverDiv.height() / 2
+		) + 'px'
+	);
+}
+
+Shellcast.prototype.hoverOut = function () {
+	this.hoverDiv.remove();
+	this.hoverDiv = undefined;
+}
+
+Shellcast.prototype.click = function () {
+	var self = this;
+	if (self.player.playing)
+		self.player.pause();
+	else if (self.player.paused)
+		self.player.unpause();
 	else
-		console.info("Data is loaded and ready to play");
+		self.player.play();
+}
+Shellcast.prototype.updateHover = function (state) {
+	var self = this;
+	if (! self.hoverDiv)
+		return;
+	var action;
+	if (state === 'playing')
+		action = 'pause';
+	else if (state === 'paused')
+		action = 'unpause';
+	else if (state === 'stopped')
+		action = 'replay';
+	else 
+		action = 'play';
+	self.hoverDiv.html(action);
 }
 
 Shellcast.Player = function (term, inputDiv) {
 	this.term = term;
+	this.state = undefined;
 	this.playing = false;
+	this.paused  = false;
+	this.reachedLastFrame = false
 	this.inputDiv = inputDiv;
+	this.onStateChange = undefined;
 }
 
 Shellcast.Player.prototype.load = function (data) {
@@ -76,11 +133,68 @@ Shellcast.Player.prototype.play = function () {
 
 	if (player.playing)
 		return;
-	player.playing = true;
+
+	player.stateChange('playing');
+
+	if (player.reachedLastFrame) {
+		// Reset the terminal
+		player.reachedLastFrame = false;
+		player.term.reset();
+	}
 
 	player.currentFrame = -1;
-
 	player.playNextFrame();
+}
+
+Shellcast.Player.prototype.pause = function () {
+	var player = this;
+	if (player.paused)
+		return;
+	player.stateChange('paused');
+	if (player.nextFrameTimeoutHandle) {
+		window.clearTimeout(player.nextFrameTimeoutHandle);
+		player.nextFrameTimeoutHandler = undefined;
+	}
+}
+
+Shellcast.Player.prototype.unpause = function () {
+	var player = this;
+	if (! player.paused)
+		return;
+	player.stateChange('playing');
+	player.playNextFrame();
+}
+
+Shellcast.Player.prototype.reset = function () {
+	var player = this;
+	if (player.playing)
+		player.pause;
+	player.reachedLastFrame = true;
+	player.play();
+}
+
+Shellcast.Player.prototype.stateChange = function (state) {
+	var player = this;
+	player.state = state;
+
+	if (state === 'playing') {
+		player.playing = true;
+		player.paused  = false;
+		player.term.startBlink();
+	}
+	else if (state === 'stopped') {
+		player.reachedLastFrame = true;
+		player.playing = false;
+		player.term.stopBlink();
+	}
+	else if (state === 'paused') {
+		player.playing = false;
+		player.paused  = true;
+		player.term.stopBlink();
+	}
+
+	if (player.onStateChange)
+		player.onStateChange(state);
 }
 
 Shellcast.Player.prototype.playNextFrame = function () {
@@ -88,7 +202,7 @@ Shellcast.Player.prototype.playNextFrame = function () {
 
 	// Check to see if the next frame exists
 	if (player.currentFrame + 1 > player.data.frames.length - 1) {
-		console.info("Reached end of frames");
+		player.stateChange('stopped');
 		return;
 	}
 
@@ -130,5 +244,7 @@ Shellcast.Player.prototype.playNextFrame = function () {
 
 Shellcast.Player.prototype.addInputKey = function (key) {
 	var player = this;
-	player.inputDiv.append('<kbd class="light">' + key + '</kbd>');
+	var kbd = $('<kbd class="light">' + key + '</kbd>');
+	player.inputDiv.prepend(kbd);
+	kbd.delay(1000).fadeOut(2000, 'swing');
 }
