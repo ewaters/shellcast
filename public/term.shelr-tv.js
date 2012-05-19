@@ -1,0 +1,1 @@
+../deps/shelr.tv/app/assets/javascripts/player/term.js
