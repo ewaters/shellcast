@@ -253,14 +253,13 @@ Terminal.prototype.open = function() {
     this.children.push(div);
   }
 
-  document.body.appendChild(this.element);
-
   this.refresh(0, this.rows - 1);
 
-  Terminal.bindKeys();
+  this.startBlink();
   this.focus();
 
-  this.startBlink();
+/*
+  Terminal.bindKeys();
 
   on(this.element, 'mousedown', function() {
     self.focus();
@@ -302,14 +301,17 @@ Terminal.prototype.open = function() {
 
   this.bindMouse();
 
+  // sync default bg/fg colors
+  this.element.style.backgroundColor = Terminal.defaultColors.bg;
+  this.element.style.color = Terminal.defaultColors.fg;
+*/
+
   // XXX - hack, move this somewhere else.
   if (Terminal.brokenBold == null) {
     Terminal.brokenBold = isBoldBroken();
   }
 
-  // sync default bg/fg colors
-  this.element.style.backgroundColor = Terminal.defaultColors.bg;
-  this.element.style.color = Terminal.defaultColors.fg;
+  return this.element;
 };
 
 // XTerm mouse events
