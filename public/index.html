@@ -1,143 +1,23 @@
 <!doctype html>
 <html>
 <head>
+	<link rel="stylesheet" href="keys.css" type="text/css"/>
+	<link rel="stylesheet" href="shellcast.css" type="text/css"/>
 
-<link rel="stylesheet" href="keys.css" type="text/css"/>
-<script src="jquery-1.7.2.min.js"></script>
-<script src="term.js"></script>
-<style>
-.shellcast {
-	border: 1px solid grey;
-	display: inline-block;
-}
-
-.terminal-wrapper {
-	display: inline-block;
-	background: black;
-	padding: 4px;
-	margin: 0px;
-}
-.terminal {
-	font-family: Menlo;
-	line-height: 1.3em;
-	font-size: 0.8em;
-	background: black;
-	color: white;
-}
-.terminal .reverse-video {
-	background: white;
-	color: black;
-}
-</style>
-
+	<script src="jquery-1.7.2.min.js"></script>
+	<script src="term.js"></script>
+	<script src="shellcast.js"></script>
 </head>
 <body>
 
 <div id='sample'></div>
 
 <script>
-var terminal_character_width = 8; // Menlo 0.8em or 0.9em
-
-function loadShellcast (data, container) {
-	console.info("Got data", data);
-	var element = $(container);
-
-	element.toggleClass('shellcast', true);
-
-	// Create the terminal
-	var term = new Terminal(
-		data.term_cols,
-		data.term_rows
-	);
-
-	// Create Terminal DOM, attach it to the element and set its width
-	var terminal = term.open();
-	element.append(
-		$('<div class="terminal-wrapper"></div>').append(terminal)
-	);
-	$(terminal).width(terminal_character_width * data.term_cols);
-
-	// Create a place to display input
-	var inputDisplay = $('<div class="input-display"></div>');
-	element.append(inputDisplay);
-
-	// Create a new player, give it the term and hit play
-	var player = new Shellcast(term, inputDisplay);
-	player.load(data);
-	player.play();
-}
-
-var Shellcast = function (term, inputDiv) {
-	this.term = term;
-	this.playing = false;
-	this.inputDiv = inputDiv;
-}
-
-Shellcast.prototype.load = function (data) {
-	this.data = data;
-}
-
-Shellcast.prototype.play = function () {
-	var player = this;
-
-	if (player.playing)
-		return;
-	player.playing = true;
-
-	player.currentFrame = -1;
-
-	player.playNextFrame();
-}
-
-Shellcast.prototype.playNextFrame = function () {
-	var player = this;
-
-	// Check to see if the next frame exists
-	if (player.currentFrame + 1 > player.data.frames.length - 1) {
-		console.info("Reached end of frames");
-		return;
-	}
-
-	// Fetch the next frame and ensure it's of the proper type
-	player.currentFrame = player.currentFrame + 1;
-
-	var frame = player.data.frames[ player.currentFrame ];
-	if (frame === undefined) {
-		console.error("Frame " + player.currentFrame + " doesn't exist");
-		return;
-	}
-	if (! $.isArray(frame) || frame.length !== 3) {
-		console.error("Frame " + player.currentFrame + " is not an array with three items", frame);
-		return;
-	}
-
-	// Act upon the frame contents
-	if (frame[0] === 'in') {
-		player.addInputKey(frame[2]);
-	}
-	else if (frame[0] === 'out') {
-		player.term.write(frame[2]);
-	}
-	else {
-		console.error("Frame " + player.currentFrame + " has unsupported type", frame);
-		return;
-	}
-
-	// Set timeout for the next frame.  The timer value for this frame represents the number of
-	// ms until this frame was displayed, so need to look ahead for this.
-	var timeout = 0;
-	if (player.currentFrame < player.data.frames.length - 1)
-		timeout = player.data.frames[ player.currentFrame + 1 ][1];
-	player.nextFrameTimeoutHandle = window.setTimeout(
-		function () { player.playNextFrame() },
-		timeout
-	);
-}
-
-Shellcast.prototype.addInputKey = function (key) {
-	var player = this;
-	player.inputDiv.append('<kbd class="light">' + key+ '</kbd>');
-}
+new Shellcast({
+	url: getParameterByName('url'),
+	element: $('#sample'),
+	autoplay: true
+});
 
 function getParameterByName (name) {
 	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -149,14 +29,6 @@ function getParameterByName (name) {
 	else
 		return decodeURIComponent(results[1].replace(/\+/g, " "));
 }
-
-$.ajax({
-	url: getParameterByName('url'),
-	dataType: 'json',
-	success: function (data) {
-		loadShellcast(data, document.getElementById('sample'));
-	}
-});
 </script>
 
 </body>

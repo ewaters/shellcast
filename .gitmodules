@@ -7,3 +7,6 @@
 [submodule "deps/keyscss"]
 	path = deps/keyscss
 	url = git://github.com/michaelhue/keyscss.git
+[submodule "deps/ttyrec-plusplus"]
+	path = deps/ttyrec-plusplus
+	url = git://github.com/ewaters/ttyrec-plusplus

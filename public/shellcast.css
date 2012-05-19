@@ -1,0 +1,22 @@
+.shellcast {
+	border: 1px solid grey;
+	display: inline-block;
+}
+
+.terminal-wrapper {
+	display: inline-block;
+	background: black;
+	padding: 4px;
+	margin: 0px;
+}
+.terminal {
+	font-family: Menlo;
+	line-height: 1.3em;
+	font-size: 0.8em;
+	background: black;
+	color: white;
+}
+.terminal .reverse-video {
+	background: white;
+	color: black;
+}
