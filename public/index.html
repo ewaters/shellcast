@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+
+<script src="jquery-1.7.2.min.js"></script>
+<script src="term.js"></script>
+<style>
+#terminal {
+	font-family: monospace;
+	line-height: 1.0em;
+	font-size: 0.9em;
+}
+</style>
+
+</head>
+<body>
+
+<div id='terminal'></div>
+
+<script>
+function loadShellcast (data) {
+	console.info("Got data", data);
+
+	var term = new Terminal(
+		data.term_cols,
+		data.term_rows,
+		function (stuff) {
+			console.info("Terminal callback:", stuff);
+		}
+	);
+	term.open( document.getElementById('terminal') );
+
+	var player = new Shellcast(term);
+	player.load(data);
+	player.play();
+}
+
+var Shellcast = function (term) {
+	this.term = term;
+	this.playing = false;
+}
+
+Shellcast.prototype.load = function (data) {
+	this.data = data;
+}
+
+Shellcast.prototype.play = function () {
+	var player = this;
+
+	if (player.playing)
+		return;
+	player.playing = true;
+
+	player.currentFrame = -1;
+
+	player.playNextFrame();
+}
+
+Shellcast.prototype.playNextFrame = function () {
+	var player = this;
+
+	// Check to see if the next frame exists
+	if (player.currentFrame + 1 > player.data.frames.length - 1) {
+		console.info("Reached end of frames");
+		return;
+	}
+
+	// Fetch the next frame and ensure it's of the proper type
+	player.currentFrame = player.currentFrame + 1;
+
+	var frame = player.data.frames[ player.currentFrame ];
+	if (frame === undefined) {
+		console.error("Frame " + player.currentFrame + " doesn't exist");
+		return;
+	}
+	if (! $.isArray(frame) || frame.length !== 3) {
+		console.error("Frame " + player.currentFrame + " is not an array with three items", frame);
+		return;
+	}
+
+	// Act upon the frame contents
+	if (frame[0] === 'in') {
+		// TODO: Do something with user input
+	}
+	else if (frame[0] === 'out') {
+		player.term.write(frame[2]);
+	}
+	else {
+		console.error("Frame " + player.currentFrame + " has unsupported type", frame);
+		return;
+	}
+
+	// Set timeout for the next frame
+	player.nextFrameTimeoutHandle = window.setTimeout(
+		function () { player.playNextFrame() },
+		frame[1]
+	);
+}
+
+$.ajax({
+	url: 'ttyrec.12000.json',
+	dataType: 'json',
+	success: loadShellcast
+});
+</script>
+
+</body>
+</html>

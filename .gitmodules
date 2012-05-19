@@ -1,0 +1,6 @@
+[submodule "deps/tty.js"]
+	path = deps/tty.js
+	url = git://github.com/chjj/tty.js.git
+[submodule "deps/shelr.tv"]
+	path = deps/shelr.tv
+	url = git://github.com/antono/shelr.tv.git
