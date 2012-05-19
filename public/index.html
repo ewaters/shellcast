@@ -5,39 +5,76 @@
 <script src="jquery-1.7.2.min.js"></script>
 <script src="term.js"></script>
 <style>
-#terminal {
-	font-family: monospace;
-	line-height: 1.0em;
-	font-size: 0.9em;
+.shellcast {
+	border: 1px solid grey;
+	display: inline-block;
+}
+
+.terminal-wrapper {
+	display: inline-block;
+	background: black;
+	padding: 4px;
+	margin: 0px;
+}
+.terminal {
+	font-family: Menlo;
+	line-height: 1.3em;
+	font-size: 0.8em;
+	background: black;
+	color: white;
+}
+.terminal .reverse-video {
+	background: white;
+	color: black;
+}
+.input-display key {
+	display: inline-block;
+	border: 1px solid grey;
+	padding: 2px;
 }
 </style>
 
 </head>
 <body>
 
-<div id='terminal'></div>
+<div id='sample'></div>
 
 <script>
-function loadShellcast (data) {
-	console.info("Got data", data);
+var terminal_character_width = 8; // Menlo 0.8em or 0.9em
 
+function loadShellcast (data, container) {
+	console.info("Got data", data);
+	var element = $(container);
+
+	element.toggleClass('shellcast', true);
+
+	// Create the terminal
 	var term = new Terminal(
 		data.term_cols,
-		data.term_rows,
-		function (stuff) {
-			console.info("Terminal callback:", stuff);
-		}
+		data.term_rows
 	);
-	term.open( document.getElementById('terminal') );
 
-	var player = new Shellcast(term);
+	// Create Terminal DOM, attach it to the element and set its width
+	var terminal = term.open();
+	element.append(
+		$('<div class="terminal-wrapper"></div>').append(terminal)
+	);
+	$(terminal).width(terminal_character_width * data.term_cols);
+
+	// Create a place to display input
+	var inputDisplay = $('<div class="input-display"></div>');
+	element.append(inputDisplay);
+
+	// Create a new player, give it the term and hit play
+	var player = new Shellcast(term, inputDisplay);
 	player.load(data);
 	player.play();
 }
 
-var Shellcast = function (term) {
+var Shellcast = function (term, inputDiv) {
 	this.term = term;
 	this.playing = false;
+	this.inputDiv = inputDiv;
 }
 
 Shellcast.prototype.load = function (data) {
@@ -80,7 +117,7 @@ Shellcast.prototype.playNextFrame = function () {
 
 	// Act upon the frame contents
 	if (frame[0] === 'in') {
-		// TODO: Do something with user input
+		player.addInputKey(frame[2]);
 	}
 	else if (frame[0] === 'out') {
 		player.term.write(frame[2]);
@@ -90,17 +127,39 @@ Shellcast.prototype.playNextFrame = function () {
 		return;
 	}
 
-	// Set timeout for the next frame
+	// Set timeout for the next frame.  The timer value for this frame represents the number of
+	// ms until this frame was displayed, so need to look ahead for this.
+	var timeout = 0;
+	if (player.currentFrame < player.data.frames.length - 1)
+		timeout = player.data.frames[ player.currentFrame + 1 ][1];
 	player.nextFrameTimeoutHandle = window.setTimeout(
 		function () { player.playNextFrame() },
-		frame[1]
+		timeout
 	);
 }
 
+Shellcast.prototype.addInputKey = function (key) {
+	var player = this;
+	player.inputDiv.append('<key>' + key+ '</key>');
+}
+
+function getParameterByName (name) {
+	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+	var regexS = "[\\?&]" + name + "=([^&#]*)";
+	var regex = new RegExp(regexS);
+	var results = regex.exec(window.location.search);
+	if (results == null)
+		return "";
+	else
+		return decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
 $.ajax({
-	url: 'ttyrec.12000.json',
+	url: getParameterByName('url'),
 	dataType: 'json',
-	success: loadShellcast
+	success: function (data) {
+		loadShellcast(data, document.getElementById('sample'));
+	}
 });
 </script>
 
