@@ -26,6 +26,27 @@ var Shellcast = function (params) {
 	});
 }
 
+Shellcast.ascii_table_map = {
+	8:   "\u2190BSP",
+	9:   "\u21e5", // tab
+	10:  "\u21a9", // new line
+	11:  "\u21e5", // tab
+	13:  "\u21a9", // new line
+	32:  "\u2423", // space
+	127: "\u2190DEL",
+};
+
+Shellcast.control_code_map = {
+	"\x1b[B": "\u2193", // down arrow
+	"\x1bOB": "\u2193",
+	"\x1b[C": "\u2192", // right arrow
+	"\x1bOC": "\u2192",
+	"\x1b[A": "\u2191", // up arrow
+	"\x1bOA": "\u2191",
+	"\x1b[D": "\u2190", // left arrow
+	"\x1bOD": "\u2190"
+};
+
 Shellcast.prototype.loadData = function (data) {
 	var self = this;
 	self.data = data;
@@ -53,18 +74,39 @@ Shellcast.prototype.loadData = function (data) {
 	captureMouseEvents.click( $.proxy( self.click, self ) );
 
 	// Create a place to display input
-	var inputDisplay = $('<div class="input-display"></div>');
-	self.element.append(inputDisplay);
-	inputDisplay.width( self.params.terminal_character_width * data.term_cols );
+	self.inputDisplayDiv = $('<div class="input-display"></div>');
+	self.element.append(self.inputDisplayDiv);
+	self.inputDisplayDiv.width( self.params.terminal_character_width * data.term_cols );
 
 	// Create a new player, give it the term and hit play
-	self.player = new Shellcast.Player(term, inputDisplay);
+	self.player = new Shellcast.Player(term);
 	self.player.load(data);
 
 	self.player.onStateChange = $.proxy( self.updateHover, self );
+	self.player.onInputKey = $.proxy( self.addInputKey, self );
 
 	if (self.params.autoplay)
 		self.player.play();
+}
+
+Shellcast.prototype.addInputKey = function (key) {
+	var self = this;
+	// Map the key to something a bit more readable for non-visible characters
+
+	var text = key;
+	if (Shellcast.control_code_map[key])
+		text = Shellcast.control_code_map[key];
+	else if (key.length === 1) {
+		var ord = key.charCodeAt(0);
+		if (Shellcast.ascii_table_map[ord])
+			text = Shellcast.ascii_table_map[ord];
+		else if (ord <= 31)
+			text = 'Ctrl-' + String.fromCharCode(ord + 64);
+	}
+
+	var kbd = $('<kbd class="light">' + text + '</kbd>');
+	self.inputDisplayDiv.prepend(kbd);
+	kbd.delay(1000).fadeOut(2000, 'swing');
 }
 
 Shellcast.prototype.hoverIn = function () {
@@ -98,6 +140,7 @@ Shellcast.prototype.click = function () {
 	else
 		self.player.play();
 }
+
 Shellcast.prototype.updateHover = function (state) {
 	var self = this;
 	if (! self.hoverDiv)
@@ -114,13 +157,17 @@ Shellcast.prototype.updateHover = function (state) {
 	self.hoverDiv.html(action);
 }
 
-Shellcast.Player = function (term, inputDiv) {
+/*
+   Shellcast Player
+   ================
+*/
+
+Shellcast.Player = function (term) {
 	this.term = term;
 	this.state = undefined;
 	this.playing = false;
 	this.paused  = false;
 	this.reachedLastFrame = false
-	this.inputDiv = inputDiv;
 	this.onStateChange = undefined;
 }
 
@@ -220,8 +267,8 @@ Shellcast.Player.prototype.playNextFrame = function () {
 	}
 
 	// Act upon the frame contents
-	if (frame[0] === 'in') {
-		player.addInputKey(frame[2]);
+	if (frame[0] === 'in' && player.onInputKey) {
+		player.onInputKey(frame[2]);
 	}
 	else if (frame[0] === 'out') {
 		player.term.write(frame[2]);
@@ -240,11 +287,4 @@ Shellcast.Player.prototype.playNextFrame = function () {
 		function () { player.playNextFrame() },
 		timeout
 	);
-}
-
-Shellcast.Player.prototype.addInputKey = function (key) {
-	var player = this;
-	var kbd = $('<kbd class="light">' + key + '</kbd>');
-	player.inputDiv.prepend(kbd);
-	kbd.delay(1000).fadeOut(2000, 'swing');
 }
