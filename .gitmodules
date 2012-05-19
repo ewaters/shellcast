@@ -4,3 +4,6 @@
 [submodule "deps/shelr.tv"]
 	path = deps/shelr.tv
 	url = git://github.com/antono/shelr.tv.git
+[submodule "deps/keyscss"]
+	path = deps/keyscss
+	url = git://github.com/michaelhue/keyscss.git

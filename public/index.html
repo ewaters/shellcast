@@ -2,6 +2,7 @@
 <html>
 <head>
 
+<link rel="stylesheet" href="keys.css" type="text/css"/>
 <script src="jquery-1.7.2.min.js"></script>
 <script src="term.js"></script>
 <style>
@@ -26,11 +27,6 @@
 .terminal .reverse-video {
 	background: white;
 	color: black;
-}
-.input-display key {
-	display: inline-block;
-	border: 1px solid grey;
-	padding: 2px;
 }
 </style>
 
@@ -140,7 +136,7 @@ Shellcast.prototype.playNextFrame = function () {
 
 Shellcast.prototype.addInputKey = function (key) {
 	var player = this;
-	player.inputDiv.append('<key>' + key+ '</key>');
+	player.inputDiv.append('<kbd class="light">' + key+ '</kbd>');
 }
 
 function getParameterByName (name) {
