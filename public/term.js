@@ -666,6 +666,7 @@ Terminal.prototype.refresh = function(start, end) {
     , attr
     , fgColor
     , bgColor
+	, classes
     , flags
     , row
     , parent;
@@ -710,7 +711,7 @@ Terminal.prototype.refresh = function(start, end) {
           if (data === -1) {
             out += '<span class="reverse-video">';
           } else {
-            out += '<span style="';
+			classes = []
 
             bgColor = data & 0x1ff;
             fgColor = (data >> 9) & 0x1ff;
@@ -718,29 +719,26 @@ Terminal.prototype.refresh = function(start, end) {
 
             if (flags & 1) {
               if (!Terminal.brokenBold) {
-                out += 'font-weight:bold;';
+				classes.push('tty_b');
               }
               // see: XTerm*boldColors
               if (fgColor < 8) fgColor += 8;
             }
 
             if (flags & 2) {
-              out += 'text-decoration:underline;';
+			  classes.push('tty_u');
             }
 
+
             if (bgColor !== 256) {
-              out += 'background-color:'
-                + Terminal.colors[bgColor]
-                + ';';
+			  classes.push('tty_bg' + bgColor);
             }
 
             if (fgColor !== 257) {
-              out += 'color:'
-                + Terminal.colors[fgColor]
-                + ';';
+			  classes.push('tty_fg' + fgColor);
             }
 
-            out += '">';
+			out += '<span class="' + classes.join(' ') + '">';
           }
         }
       }
