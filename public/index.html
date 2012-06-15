@@ -3,10 +3,17 @@
 <head>
 	<link rel="stylesheet" href="keys.css" type="text/css"/>
 	<link rel="stylesheet" href="shellcast.css" type="text/css"/>
+	<link rel="stylesheet" href="fonts/stylesheet.css" type="text/css"/>
 
 	<script src="jquery-1.7.2.min.js"></script>
 	<script src="term.js"></script>
 	<script src="shellcast.js"></script>
+	<style>
+		.terminal {
+			font-family: 'LiberationMonoForPowerline';
+			line-height: 1.1em;
+		}
+	</style>
 </head>
 <body>
 
@@ -16,7 +23,8 @@
 var cast = new Shellcast({
 	url: getParameterByName('url'),
 	element: $('#sample'),
-	autoplay: true
+	autoplay: true,
+	terminal_character_width: 8
 });
 
 function getParameterByName (name) {

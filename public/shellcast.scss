@@ -1,0 +1,579 @@
+.shellcast {
+	display: inline-block;
+}
+
+.terminal-wrapper {
+	position: relative;
+	display: inline-block;
+	background: black;
+	color: white;
+	padding: 4px;
+	margin: 0px;
+}
+.terminal {
+	font-family: 'FreeMono', monospace;
+	line-height: 1.0em;
+	font-size: 0.8em;
+}
+.terminal .reverse-video {
+	background: white;
+	color: black;
+}
+
+.shellcast .action-cover {
+	position: absolute;
+	left: 0px;
+	background: white;
+	color: red;
+	opacity: 0.5;
+	width: 100%;
+	height: 80px;
+	text-align: center;
+	font-size: 4em;
+	font-family: Arial;
+	font-weight: bold;
+}
+
+.shellcast .capture-mouse-events {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
+.shellcast .input-display {
+	margin-top: 10px;
+	height: 20px;
+	overflow: hidden;
+}
+
+.shellcast .input-display kbd {
+	float: right;
+	margin: 0px;
+	font-weight: bold;
+	font-size: 0.8em;
+	padding: 4px;
+	color: #444;
+}
+
+.tty_b { font-weight: bold; }
+.tty_u { text-decoration: underline; }
+
+@import "colors_default.scss";
+@import "colors_solarized.scss";
+
+.tty_fg0 { color: $color0; }
+.tty_fg1 { color: $color1; }
+.tty_fg2 { color: $color2; }
+.tty_fg3 { color: $color3; }
+.tty_fg4 { color: $color4; }
+.tty_fg5 { color: $color5; }
+.tty_fg6 { color: $color6; }
+.tty_fg7 { color: $color7; }
+.tty_fg8 { color: $color8; }
+.tty_fg9 { color: $color9; }
+.tty_fg10 { color: $color10; }
+.tty_fg11 { color: $color11; }
+.tty_fg12 { color: $color12; }
+.tty_fg13 { color: $color13; }
+.tty_fg14 { color: $color14; }
+.tty_fg15 { color: $color15; }
+.tty_fg16 { color: $color16; }
+.tty_fg17 { color: $color17; }
+.tty_fg18 { color: $color18; }
+.tty_fg19 { color: $color19; }
+.tty_fg20 { color: $color20; }
+.tty_fg21 { color: $color21; }
+.tty_fg22 { color: $color22; }
+.tty_fg23 { color: $color23; }
+.tty_fg24 { color: $color24; }
+.tty_fg25 { color: $color25; }
+.tty_fg26 { color: $color26; }
+.tty_fg27 { color: $color27; }
+.tty_fg28 { color: $color28; }
+.tty_fg29 { color: $color29; }
+.tty_fg30 { color: $color30; }
+.tty_fg31 { color: $color31; }
+.tty_fg32 { color: $color32; }
+.tty_fg33 { color: $color33; }
+.tty_fg34 { color: $color34; }
+.tty_fg35 { color: $color35; }
+.tty_fg36 { color: $color36; }
+.tty_fg37 { color: $color37; }
+.tty_fg38 { color: $color38; }
+.tty_fg39 { color: $color39; }
+.tty_fg40 { color: $color40; }
+.tty_fg41 { color: $color41; }
+.tty_fg42 { color: $color42; }
+.tty_fg43 { color: $color43; }
+.tty_fg44 { color: $color44; }
+.tty_fg45 { color: $color45; }
+.tty_fg46 { color: $color46; }
+.tty_fg47 { color: $color47; }
+.tty_fg48 { color: $color48; }
+.tty_fg49 { color: $color49; }
+.tty_fg50 { color: $color50; }
+.tty_fg51 { color: $color51; }
+.tty_fg52 { color: $color52; }
+.tty_fg53 { color: $color53; }
+.tty_fg54 { color: $color54; }
+.tty_fg55 { color: $color55; }
+.tty_fg56 { color: $color56; }
+.tty_fg57 { color: $color57; }
+.tty_fg58 { color: $color58; }
+.tty_fg59 { color: $color59; }
+.tty_fg60 { color: $color60; }
+.tty_fg61 { color: $color61; }
+.tty_fg62 { color: $color62; }
+.tty_fg63 { color: $color63; }
+.tty_fg64 { color: $color64; }
+.tty_fg65 { color: $color65; }
+.tty_fg66 { color: $color66; }
+.tty_fg67 { color: $color67; }
+.tty_fg68 { color: $color68; }
+.tty_fg69 { color: $color69; }
+.tty_fg70 { color: $color70; }
+.tty_fg71 { color: $color71; }
+.tty_fg72 { color: $color72; }
+.tty_fg73 { color: $color73; }
+.tty_fg74 { color: $color74; }
+.tty_fg75 { color: $color75; }
+.tty_fg76 { color: $color76; }
+.tty_fg77 { color: $color77; }
+.tty_fg78 { color: $color78; }
+.tty_fg79 { color: $color79; }
+.tty_fg80 { color: $color80; }
+.tty_fg81 { color: $color81; }
+.tty_fg82 { color: $color82; }
+.tty_fg83 { color: $color83; }
+.tty_fg84 { color: $color84; }
+.tty_fg85 { color: $color85; }
+.tty_fg86 { color: $color86; }
+.tty_fg87 { color: $color87; }
+.tty_fg88 { color: $color88; }
+.tty_fg89 { color: $color89; }
+.tty_fg90 { color: $color90; }
+.tty_fg91 { color: $color91; }
+.tty_fg92 { color: $color92; }
+.tty_fg93 { color: $color93; }
+.tty_fg94 { color: $color94; }
+.tty_fg95 { color: $color95; }
+.tty_fg96 { color: $color96; }
+.tty_fg97 { color: $color97; }
+.tty_fg98 { color: $color98; }
+.tty_fg99 { color: $color99; }
+.tty_fg100 { color: $color100; }
+.tty_fg101 { color: $color101; }
+.tty_fg102 { color: $color102; }
+.tty_fg103 { color: $color103; }
+.tty_fg104 { color: $color104; }
+.tty_fg105 { color: $color105; }
+.tty_fg106 { color: $color106; }
+.tty_fg107 { color: $color107; }
+.tty_fg108 { color: $color108; }
+.tty_fg109 { color: $color109; }
+.tty_fg110 { color: $color110; }
+.tty_fg111 { color: $color111; }
+.tty_fg112 { color: $color112; }
+.tty_fg113 { color: $color113; }
+.tty_fg114 { color: $color114; }
+.tty_fg115 { color: $color115; }
+.tty_fg116 { color: $color116; }
+.tty_fg117 { color: $color117; }
+.tty_fg118 { color: $color118; }
+.tty_fg119 { color: $color119; }
+.tty_fg120 { color: $color120; }
+.tty_fg121 { color: $color121; }
+.tty_fg122 { color: $color122; }
+.tty_fg123 { color: $color123; }
+.tty_fg124 { color: $color124; }
+.tty_fg125 { color: $color125; }
+.tty_fg126 { color: $color126; }
+.tty_fg127 { color: $color127; }
+.tty_fg128 { color: $color128; }
+.tty_fg129 { color: $color129; }
+.tty_fg130 { color: $color130; }
+.tty_fg131 { color: $color131; }
+.tty_fg132 { color: $color132; }
+.tty_fg133 { color: $color133; }
+.tty_fg134 { color: $color134; }
+.tty_fg135 { color: $color135; }
+.tty_fg136 { color: $color136; }
+.tty_fg137 { color: $color137; }
+.tty_fg138 { color: $color138; }
+.tty_fg139 { color: $color139; }
+.tty_fg140 { color: $color140; }
+.tty_fg141 { color: $color141; }
+.tty_fg142 { color: $color142; }
+.tty_fg143 { color: $color143; }
+.tty_fg144 { color: $color144; }
+.tty_fg145 { color: $color145; }
+.tty_fg146 { color: $color146; }
+.tty_fg147 { color: $color147; }
+.tty_fg148 { color: $color148; }
+.tty_fg149 { color: $color149; }
+.tty_fg150 { color: $color150; }
+.tty_fg151 { color: $color151; }
+.tty_fg152 { color: $color152; }
+.tty_fg153 { color: $color153; }
+.tty_fg154 { color: $color154; }
+.tty_fg155 { color: $color155; }
+.tty_fg156 { color: $color156; }
+.tty_fg157 { color: $color157; }
+.tty_fg158 { color: $color158; }
+.tty_fg159 { color: $color159; }
+.tty_fg160 { color: $color160; }
+.tty_fg161 { color: $color161; }
+.tty_fg162 { color: $color162; }
+.tty_fg163 { color: $color163; }
+.tty_fg164 { color: $color164; }
+.tty_fg165 { color: $color165; }
+.tty_fg166 { color: $color166; }
+.tty_fg167 { color: $color167; }
+.tty_fg168 { color: $color168; }
+.tty_fg169 { color: $color169; }
+.tty_fg170 { color: $color170; }
+.tty_fg171 { color: $color171; }
+.tty_fg172 { color: $color172; }
+.tty_fg173 { color: $color173; }
+.tty_fg174 { color: $color174; }
+.tty_fg175 { color: $color175; }
+.tty_fg176 { color: $color176; }
+.tty_fg177 { color: $color177; }
+.tty_fg178 { color: $color178; }
+.tty_fg179 { color: $color179; }
+.tty_fg180 { color: $color180; }
+.tty_fg181 { color: $color181; }
+.tty_fg182 { color: $color182; }
+.tty_fg183 { color: $color183; }
+.tty_fg184 { color: $color184; }
+.tty_fg185 { color: $color185; }
+.tty_fg186 { color: $color186; }
+.tty_fg187 { color: $color187; }
+.tty_fg188 { color: $color188; }
+.tty_fg189 { color: $color189; }
+.tty_fg190 { color: $color190; }
+.tty_fg191 { color: $color191; }
+.tty_fg192 { color: $color192; }
+.tty_fg193 { color: $color193; }
+.tty_fg194 { color: $color194; }
+.tty_fg195 { color: $color195; }
+.tty_fg196 { color: $color196; }
+.tty_fg197 { color: $color197; }
+.tty_fg198 { color: $color198; }
+.tty_fg199 { color: $color199; }
+.tty_fg200 { color: $color200; }
+.tty_fg201 { color: $color201; }
+.tty_fg202 { color: $color202; }
+.tty_fg203 { color: $color203; }
+.tty_fg204 { color: $color204; }
+.tty_fg205 { color: $color205; }
+.tty_fg206 { color: $color206; }
+.tty_fg207 { color: $color207; }
+.tty_fg208 { color: $color208; }
+.tty_fg209 { color: $color209; }
+.tty_fg210 { color: $color210; }
+.tty_fg211 { color: $color211; }
+.tty_fg212 { color: $color212; }
+.tty_fg213 { color: $color213; }
+.tty_fg214 { color: $color214; }
+.tty_fg215 { color: $color215; }
+.tty_fg216 { color: $color216; }
+.tty_fg217 { color: $color217; }
+.tty_fg218 { color: $color218; }
+.tty_fg219 { color: $color219; }
+.tty_fg220 { color: $color220; }
+.tty_fg221 { color: $color221; }
+.tty_fg222 { color: $color222; }
+.tty_fg223 { color: $color223; }
+.tty_fg224 { color: $color224; }
+.tty_fg225 { color: $color225; }
+.tty_fg226 { color: $color226; }
+.tty_fg227 { color: $color227; }
+.tty_fg228 { color: $color228; }
+.tty_fg229 { color: $color229; }
+.tty_fg230 { color: $color230; }
+.tty_fg231 { color: $color231; }
+.tty_fg232 { color: $color232; }
+.tty_fg233 { color: $color233; }
+.tty_fg234 { color: $color234; }
+.tty_fg235 { color: $color235; }
+.tty_fg236 { color: $color236; }
+.tty_fg237 { color: $color237; }
+.tty_fg238 { color: $color238; }
+.tty_fg239 { color: $color239; }
+.tty_fg240 { color: $color240; }
+.tty_fg241 { color: $color241; }
+.tty_fg242 { color: $color242; }
+.tty_fg243 { color: $color243; }
+.tty_fg244 { color: $color244; }
+.tty_fg245 { color: $color245; }
+.tty_fg246 { color: $color246; }
+.tty_fg247 { color: $color247; }
+.tty_fg248 { color: $color248; }
+.tty_fg249 { color: $color249; }
+.tty_fg250 { color: $color250; }
+.tty_fg251 { color: $color251; }
+.tty_fg252 { color: $color252; }
+.tty_fg253 { color: $color253; }
+.tty_fg254 { color: $color254; }
+.tty_fg255 { color: $color255; }
+
+.tty_bg0 { background-color: $color0; }
+.tty_bg1 { background-color: $color1; }
+.tty_bg2 { background-color: $color2; }
+.tty_bg3 { background-color: $color3; }
+.tty_bg4 { background-color: $color4; }
+.tty_bg5 { background-color: $color5; }
+.tty_bg6 { background-color: $color6; }
+.tty_bg7 { background-color: $color7; }
+.tty_bg8 { background-color: $color8; }
+.tty_bg9 { background-color: $color9; }
+.tty_bg10 { background-color: $color10; }
+.tty_bg11 { background-color: $color11; }
+.tty_bg12 { background-color: $color12; }
+.tty_bg13 { background-color: $color13; }
+.tty_bg14 { background-color: $color14; }
+.tty_bg15 { background-color: $color15; }
+.tty_bg16 { background-color: $color16; }
+.tty_bg17 { background-color: $color17; }
+.tty_bg18 { background-color: $color18; }
+.tty_bg19 { background-color: $color19; }
+.tty_bg20 { background-color: $color20; }
+.tty_bg21 { background-color: $color21; }
+.tty_bg22 { background-color: $color22; }
+.tty_bg23 { background-color: $color23; }
+.tty_bg24 { background-color: $color24; }
+.tty_bg25 { background-color: $color25; }
+.tty_bg26 { background-color: $color26; }
+.tty_bg27 { background-color: $color27; }
+.tty_bg28 { background-color: $color28; }
+.tty_bg29 { background-color: $color29; }
+.tty_bg30 { background-color: $color30; }
+.tty_bg31 { background-color: $color31; }
+.tty_bg32 { background-color: $color32; }
+.tty_bg33 { background-color: $color33; }
+.tty_bg34 { background-color: $color34; }
+.tty_bg35 { background-color: $color35; }
+.tty_bg36 { background-color: $color36; }
+.tty_bg37 { background-color: $color37; }
+.tty_bg38 { background-color: $color38; }
+.tty_bg39 { background-color: $color39; }
+.tty_bg40 { background-color: $color40; }
+.tty_bg41 { background-color: $color41; }
+.tty_bg42 { background-color: $color42; }
+.tty_bg43 { background-color: $color43; }
+.tty_bg44 { background-color: $color44; }
+.tty_bg45 { background-color: $color45; }
+.tty_bg46 { background-color: $color46; }
+.tty_bg47 { background-color: $color47; }
+.tty_bg48 { background-color: $color48; }
+.tty_bg49 { background-color: $color49; }
+.tty_bg50 { background-color: $color50; }
+.tty_bg51 { background-color: $color51; }
+.tty_bg52 { background-color: $color52; }
+.tty_bg53 { background-color: $color53; }
+.tty_bg54 { background-color: $color54; }
+.tty_bg55 { background-color: $color55; }
+.tty_bg56 { background-color: $color56; }
+.tty_bg57 { background-color: $color57; }
+.tty_bg58 { background-color: $color58; }
+.tty_bg59 { background-color: $color59; }
+.tty_bg60 { background-color: $color60; }
+.tty_bg61 { background-color: $color61; }
+.tty_bg62 { background-color: $color62; }
+.tty_bg63 { background-color: $color63; }
+.tty_bg64 { background-color: $color64; }
+.tty_bg65 { background-color: $color65; }
+.tty_bg66 { background-color: $color66; }
+.tty_bg67 { background-color: $color67; }
+.tty_bg68 { background-color: $color68; }
+.tty_bg69 { background-color: $color69; }
+.tty_bg70 { background-color: $color70; }
+.tty_bg71 { background-color: $color71; }
+.tty_bg72 { background-color: $color72; }
+.tty_bg73 { background-color: $color73; }
+.tty_bg74 { background-color: $color74; }
+.tty_bg75 { background-color: $color75; }
+.tty_bg76 { background-color: $color76; }
+.tty_bg77 { background-color: $color77; }
+.tty_bg78 { background-color: $color78; }
+.tty_bg79 { background-color: $color79; }
+.tty_bg80 { background-color: $color80; }
+.tty_bg81 { background-color: $color81; }
+.tty_bg82 { background-color: $color82; }
+.tty_bg83 { background-color: $color83; }
+.tty_bg84 { background-color: $color84; }
+.tty_bg85 { background-color: $color85; }
+.tty_bg86 { background-color: $color86; }
+.tty_bg87 { background-color: $color87; }
+.tty_bg88 { background-color: $color88; }
+.tty_bg89 { background-color: $color89; }
+.tty_bg90 { background-color: $color90; }
+.tty_bg91 { background-color: $color91; }
+.tty_bg92 { background-color: $color92; }
+.tty_bg93 { background-color: $color93; }
+.tty_bg94 { background-color: $color94; }
+.tty_bg95 { background-color: $color95; }
+.tty_bg96 { background-color: $color96; }
+.tty_bg97 { background-color: $color97; }
+.tty_bg98 { background-color: $color98; }
+.tty_bg99 { background-color: $color99; }
+.tty_bg100 { background-color: $color100; }
+.tty_bg101 { background-color: $color101; }
+.tty_bg102 { background-color: $color102; }
+.tty_bg103 { background-color: $color103; }
+.tty_bg104 { background-color: $color104; }
+.tty_bg105 { background-color: $color105; }
+.tty_bg106 { background-color: $color106; }
+.tty_bg107 { background-color: $color107; }
+.tty_bg108 { background-color: $color108; }
+.tty_bg109 { background-color: $color109; }
+.tty_bg110 { background-color: $color110; }
+.tty_bg111 { background-color: $color111; }
+.tty_bg112 { background-color: $color112; }
+.tty_bg113 { background-color: $color113; }
+.tty_bg114 { background-color: $color114; }
+.tty_bg115 { background-color: $color115; }
+.tty_bg116 { background-color: $color116; }
+.tty_bg117 { background-color: $color117; }
+.tty_bg118 { background-color: $color118; }
+.tty_bg119 { background-color: $color119; }
+.tty_bg120 { background-color: $color120; }
+.tty_bg121 { background-color: $color121; }
+.tty_bg122 { background-color: $color122; }
+.tty_bg123 { background-color: $color123; }
+.tty_bg124 { background-color: $color124; }
+.tty_bg125 { background-color: $color125; }
+.tty_bg126 { background-color: $color126; }
+.tty_bg127 { background-color: $color127; }
+.tty_bg128 { background-color: $color128; }
+.tty_bg129 { background-color: $color129; }
+.tty_bg130 { background-color: $color130; }
+.tty_bg131 { background-color: $color131; }
+.tty_bg132 { background-color: $color132; }
+.tty_bg133 { background-color: $color133; }
+.tty_bg134 { background-color: $color134; }
+.tty_bg135 { background-color: $color135; }
+.tty_bg136 { background-color: $color136; }
+.tty_bg137 { background-color: $color137; }
+.tty_bg138 { background-color: $color138; }
+.tty_bg139 { background-color: $color139; }
+.tty_bg140 { background-color: $color140; }
+.tty_bg141 { background-color: $color141; }
+.tty_bg142 { background-color: $color142; }
+.tty_bg143 { background-color: $color143; }
+.tty_bg144 { background-color: $color144; }
+.tty_bg145 { background-color: $color145; }
+.tty_bg146 { background-color: $color146; }
+.tty_bg147 { background-color: $color147; }
+.tty_bg148 { background-color: $color148; }
+.tty_bg149 { background-color: $color149; }
+.tty_bg150 { background-color: $color150; }
+.tty_bg151 { background-color: $color151; }
+.tty_bg152 { background-color: $color152; }
+.tty_bg153 { background-color: $color153; }
+.tty_bg154 { background-color: $color154; }
+.tty_bg155 { background-color: $color155; }
+.tty_bg156 { background-color: $color156; }
+.tty_bg157 { background-color: $color157; }
+.tty_bg158 { background-color: $color158; }
+.tty_bg159 { background-color: $color159; }
+.tty_bg160 { background-color: $color160; }
+.tty_bg161 { background-color: $color161; }
+.tty_bg162 { background-color: $color162; }
+.tty_bg163 { background-color: $color163; }
+.tty_bg164 { background-color: $color164; }
+.tty_bg165 { background-color: $color165; }
+.tty_bg166 { background-color: $color166; }
+.tty_bg167 { background-color: $color167; }
+.tty_bg168 { background-color: $color168; }
+.tty_bg169 { background-color: $color169; }
+.tty_bg170 { background-color: $color170; }
+.tty_bg171 { background-color: $color171; }
+.tty_bg172 { background-color: $color172; }
+.tty_bg173 { background-color: $color173; }
+.tty_bg174 { background-color: $color174; }
+.tty_bg175 { background-color: $color175; }
+.tty_bg176 { background-color: $color176; }
+.tty_bg177 { background-color: $color177; }
+.tty_bg178 { background-color: $color178; }
+.tty_bg179 { background-color: $color179; }
+.tty_bg180 { background-color: $color180; }
+.tty_bg181 { background-color: $color181; }
+.tty_bg182 { background-color: $color182; }
+.tty_bg183 { background-color: $color183; }
+.tty_bg184 { background-color: $color184; }
+.tty_bg185 { background-color: $color185; }
+.tty_bg186 { background-color: $color186; }
+.tty_bg187 { background-color: $color187; }
+.tty_bg188 { background-color: $color188; }
+.tty_bg189 { background-color: $color189; }
+.tty_bg190 { background-color: $color190; }
+.tty_bg191 { background-color: $color191; }
+.tty_bg192 { background-color: $color192; }
+.tty_bg193 { background-color: $color193; }
+.tty_bg194 { background-color: $color194; }
+.tty_bg195 { background-color: $color195; }
+.tty_bg196 { background-color: $color196; }
+.tty_bg197 { background-color: $color197; }
+.tty_bg198 { background-color: $color198; }
+.tty_bg199 { background-color: $color199; }
+.tty_bg200 { background-color: $color200; }
+.tty_bg201 { background-color: $color201; }
+.tty_bg202 { background-color: $color202; }
+.tty_bg203 { background-color: $color203; }
+.tty_bg204 { background-color: $color204; }
+.tty_bg205 { background-color: $color205; }
+.tty_bg206 { background-color: $color206; }
+.tty_bg207 { background-color: $color207; }
+.tty_bg208 { background-color: $color208; }
+.tty_bg209 { background-color: $color209; }
+.tty_bg210 { background-color: $color210; }
+.tty_bg211 { background-color: $color211; }
+.tty_bg212 { background-color: $color212; }
+.tty_bg213 { background-color: $color213; }
+.tty_bg214 { background-color: $color214; }
+.tty_bg215 { background-color: $color215; }
+.tty_bg216 { background-color: $color216; }
+.tty_bg217 { background-color: $color217; }
+.tty_bg218 { background-color: $color218; }
+.tty_bg219 { background-color: $color219; }
+.tty_bg220 { background-color: $color220; }
+.tty_bg221 { background-color: $color221; }
+.tty_bg222 { background-color: $color222; }
+.tty_bg223 { background-color: $color223; }
+.tty_bg224 { background-color: $color224; }
+.tty_bg225 { background-color: $color225; }
+.tty_bg226 { background-color: $color226; }
+.tty_bg227 { background-color: $color227; }
+.tty_bg228 { background-color: $color228; }
+.tty_bg229 { background-color: $color229; }
+.tty_bg230 { background-color: $color230; }
+.tty_bg231 { background-color: $color231; }
+.tty_bg232 { background-color: $color232; }
+.tty_bg233 { background-color: $color233; }
+.tty_bg234 { background-color: $color234; }
+.tty_bg235 { background-color: $color235; }
+.tty_bg236 { background-color: $color236; }
+.tty_bg237 { background-color: $color237; }
+.tty_bg238 { background-color: $color238; }
+.tty_bg239 { background-color: $color239; }
+.tty_bg240 { background-color: $color240; }
+.tty_bg241 { background-color: $color241; }
+.tty_bg242 { background-color: $color242; }
+.tty_bg243 { background-color: $color243; }
+.tty_bg244 { background-color: $color244; }
+.tty_bg245 { background-color: $color245; }
+.tty_bg246 { background-color: $color246; }
+.tty_bg247 { background-color: $color247; }
+.tty_bg248 { background-color: $color248; }
+.tty_bg249 { background-color: $color249; }
+.tty_bg250 { background-color: $color250; }
+.tty_bg251 { background-color: $color251; }
+.tty_bg252 { background-color: $color252; }
+.tty_bg253 { background-color: $color253; }
+.tty_bg254 { background-color: $color254; }
+.tty_bg255 { background-color: $color255; }
